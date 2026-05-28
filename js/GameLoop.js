@@ -2,9 +2,12 @@ var canvas;
 var context;
 var player;
 var timer;
-var interval = 1000/60;
+var interval = 1000/600000;
 var p1Wins = 0;
 var p2Wins = 0;
+var ballSpeed = 30;
+var ballImage = new Image();
+ballImage.src = "Images/Pink Cat.png";
 
 canvas = document.getElementById("canvas");
 context = canvas.getContext("2d");
@@ -104,7 +107,7 @@ ball.move();
     {
         ball.x = canvas.width / 2;
         ball.y = canvas.height / 2;
-        ball.vx = 25;
+        ball.vx = ballSpeed;
         ball.vy = 0;
         p1Wins++;
     }
@@ -112,7 +115,7 @@ ball.move();
     {
         ball.x = canvas.width / 2;
         ball.y = canvas.height / 2;
-        ball.vx = 25;
+        ball.vx = ballSpeed;
         ball.vy = 0;
         p2Wins++;
     }
@@ -133,17 +136,17 @@ ball.move();
 
     if(ball.y < player1.y - player1.height/6)
     {
-        ball.vx = 25;
-        ball.vy = -25;
+        ball.vx = ballSpeed;
+        ball.vy = -ballSpeed;
     }
     else if(ball.y > player1.y + player1.height/6)
     {
-        ball.vx = 25;
-        ball.vy = 25;
+        ball.vx = ballSpeed;
+        ball.vy = ballSpeed;
     }
     else
     {
-        ball.vx = 25;
+        ball.vx = ballSpeed;
         ball.vy = 0;
     }
     }
@@ -154,17 +157,17 @@ ball.move();
 
     if(ball.y < player2.y - player2.height/6)
     {
-        ball.vx = -25;
-        ball.vy = -25;
+        ball.vx = -ballSpeed;
+        ball.vy = -ballSpeed;
     }
     else if(ball.y > player2.y + player2.height/6)
     {
-        ball.vx = -25;
-        ball.vy = 25;
+        ball.vx = -ballSpeed;
+        ball.vy = ballSpeed;
     }
     else
     {
-        ball.vx = -25;
+        ball.vx = -ballSpeed;
         ball.vy = 0;
     }
     }
@@ -173,20 +176,20 @@ ball.move();
 
     if(w)
     {
-        player1.y -= 18;
+        player1.y -= 12;
     }
     if(s)
     {
-        player1.y += 18;
+        player1.y += 12;
     }
     
     if(up)
     {
-        player2.y -= 18;
+        player2.y -= 12;
     }
     if(down)
     {
-        player2.y += 18;
+        player2.y += 12;
     }
 
 
@@ -214,5 +217,18 @@ ball.move();
     //npc3.drawRect();
     player1.drawRect();
     player2.drawRect();
-    ball.drawCircle();
+    context.beginPath();
+
+    context.save();
+    context.arc(ball.x, ball.y, ball.width / 2, 0, Math.PI * 2);
+    context.closePath();
+    context.clip();
+    context.drawImage(
+    ballImage,
+    ball.x - ball.width / 2,
+    ball.y - ball.height / 2,
+    ball.width,
+    ball.height
+);
+context.restore();
 }
